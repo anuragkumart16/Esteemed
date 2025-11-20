@@ -1,15 +1,58 @@
-import { Text, View } from "react-native";
+import { WebView } from 'react-native-webview';
+import { StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
 
 export default function Index() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    checkOnboarding();
+  }, []);
+
+  const checkOnboarding = async () => {
+    try {
+      const hasOnboarded = await AsyncStorage.getItem('hasOnboarded');
+      if (hasOnboarded === 'true') {
+        router.replace('/landing');
+      }
+    } catch (error) {
+      console.error('Error checking onboarding status:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleMessage = async (event: any) => {
+    if (event.nativeEvent.data === 'onboarding_complete') {
+      try {
+        await AsyncStorage.setItem('hasOnboarded', 'true');
+        router.replace('/landing');
+      } catch (error) {
+        console.error('Error saving onboarding status:', error);
+      }
+    }
+  };
+
+  if (isLoading) {
+    return null; // Or a loading spinner
+  }
+
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <WebView
+        source={{ uri: 'http://10.7.13.109:3000' }}
+        onMessage={handleMessage}
+      />
+    </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
