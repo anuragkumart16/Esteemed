@@ -1,8 +1,10 @@
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { View, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function LandingLayout() {
+    const insets = useSafeAreaInsets();
     return (
         <Tabs
             screenOptions={{
@@ -10,8 +12,8 @@ export default function LandingLayout() {
                 tabBarStyle: {
                     backgroundColor: '#fff',
                     borderTopWidth: 0,
-                    height: 80,
-                    paddingBottom: 20,
+                    height: 60 + (insets.bottom > 0 ? insets.bottom : 20),
+                    paddingBottom: insets.bottom > 0 ? insets.bottom : 20,
                     paddingTop: 10,
                     borderTopLeftRadius: 30,
                     borderTopRightRadius: 30,
@@ -44,10 +46,8 @@ export default function LandingLayout() {
                 name="index"
                 options={{
                     title: 'Home',
-                    tabBarIcon: ({ color, size, focused }) => (
-                        <View style={[styles.homeIconContainer, focused && styles.homeIconFocused]}>
-                            <Ionicons name="home" size={24} color={focused ? '#fff' : '#000'} />
-                        </View>
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons name="home" size={size} color={color} />
                     ),
                     tabBarLabel: 'Home',
                 }}
@@ -62,9 +62,20 @@ export default function LandingLayout() {
                 }}
             />
             <Tabs.Screen
+                name="community"
+                options={{
+                    title: 'Community',
+                    tabBarStyle: { display: 'none' },
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons name="people" size={size} color={color} />
+                    ),
+                }}
+            />
+            <Tabs.Screen
                 name="buddy"
                 options={{
                     title: 'Buddy',
+                    tabBarStyle: { display: 'none' },
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="heart" size={size} color={color} />
                     ),
@@ -74,16 +85,4 @@ export default function LandingLayout() {
     );
 }
 
-const styles = StyleSheet.create({
-    homeIconContainer: {
-        width: 40,
-        height: 40,
-        borderRadius: 12,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#e0e0e0',
-    },
-    homeIconFocused: {
-        backgroundColor: '#000',
-    },
-});
+const styles = StyleSheet.create({});

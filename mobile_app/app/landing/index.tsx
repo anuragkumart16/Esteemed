@@ -2,7 +2,14 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Modal, TextInput,
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Calendar } from 'react-native-calendars';
 import { useState, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+    getStreakStartDate,
+    setStreakStartDate,
+    clearStreak,
+    getUrgeLogs,
+    saveUrgeLog,
+    saveRelapseLog
+} from '../utils/storage';
 
 export default function Landing() {
     const [startDate, setStartDate] = useState<number | null>(null);
@@ -27,9 +34,8 @@ export default function Landing() {
 
     const checkStreak = async () => {
         try {
-            const storedDate = await AsyncStorage.getItem('streakStartDate');
-            if (storedDate) {
-                const start = parseInt(storedDate);
+            const start = await getStreakStartDate();
+            if (start) {
                 setStartDate(start);
                 updateTimer(start);
                 updateCalendar(start);
@@ -41,8 +47,7 @@ export default function Landing() {
 
     const loadUrges = async () => {
         try {
-            const existingLogs = await AsyncStorage.getItem('urgeLog');
-            const logs = existingLogs ? JSON.parse(existingLogs) : [];
+            const logs = await getUrgeLogs();
             setUrgesWon(logs.length);
         } catch (error) {
             console.error('Error loading urges:', error);
@@ -52,7 +57,7 @@ export default function Landing() {
     const startStreak = async () => {
         const now = Date.now();
         try {
-            await AsyncStorage.setItem('streakStartDate', now.toString());
+            await setStreakStartDate(now);
             setStartDate(now);
             updateTimer(now);
             updateCalendar(now);
@@ -63,7 +68,8 @@ export default function Landing() {
 
     const resetStreak = async () => {
         try {
-            await AsyncStorage.removeItem('streakStartDate');
+            await saveRelapseLog(); // Log the relapse before clearing
+            await clearStreak();
             setStartDate(null);
             setElapsedTime({ days: 0, hours: 0, minutes: 0 });
             setMarkedDates({});
@@ -83,10 +89,8 @@ export default function Landing() {
         };
 
         try {
-            const existingLogs = await AsyncStorage.getItem('urgeLog');
-            const logs = existingLogs ? JSON.parse(existingLogs) : [];
-            logs.push(newUrge);
-            await AsyncStorage.setItem('urgeLog', JSON.stringify(logs));
+            await saveUrgeLog(newUrge);
+            const logs = await getUrgeLogs();
             setUrgesWon(logs.length);
 
             // Reset and close
