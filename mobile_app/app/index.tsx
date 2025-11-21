@@ -44,7 +44,7 @@ export default function Index() {
   return (
     <SafeAreaView style={styles.container}>
       <WebView
-        source={{ uri: 'http://10.7.13.109:3000' }}
+        source={{ uri: 'https://esteemed-ruddy.vercel.app' }}
         onMessage={handleMessage}
       />
     </SafeAreaView>
