@@ -1,0 +1,34 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String    @id @default(uuid()) @map("_id")
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  streakStartDate DateTime?
+  urges           Urge[]
+  relapses        Relapse[]
+}
+
+model Urge {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId  String
+  user    User     @relation(fields: [userId], references: [id])
+  trigger String
+  victory String
+  date    DateTime @default(now())
+}
+
+model Relapse {
+  id     String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId String
+  user   User     @relation(fields: [userId], references: [id])
+  reason String
+  date   DateTime @default(now())
+}

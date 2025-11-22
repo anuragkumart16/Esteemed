@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 declare global {
   interface Window {
@@ -12,6 +13,7 @@ declare global {
 
 export default function Home() {
   const [showSplash, setShowSplash] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -25,7 +27,7 @@ export default function Home() {
     if (window.ReactNativeWebView) {
       window.ReactNativeWebView.postMessage("onboarding_complete");
     } else {
-      console.log("Onboarding complete (Web Mode)");
+      router.push("/landing");
     }
   };
 
@@ -62,6 +64,7 @@ export default function Home() {
 
       <div className="z-10 w-full max-w-md mb-8">
         <button
+          type="button"
           onClick={handleContinue}
           className="w-full rounded-full bg-white py-4 text-black font-bold text-lg hover:bg-gray-200 transition-colors"
         >
