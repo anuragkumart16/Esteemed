@@ -8,7 +8,8 @@ import {
     clearStreak,
     getUrgeLogs,
     saveUrgeLog,
-    saveRelapseLog
+    saveRelapseLog,
+    getRelapseLogs
 } from '../utils/storage';
 
 export default function Landing() {
@@ -24,13 +25,35 @@ export default function Landing() {
 
     // Reset Modal State
     const [showResetModal, setShowResetModal] = useState(false);
+    const [relapseReason, setRelapseReason] = useState('');
+
+    // Header State
+    const [lastRelapseReason, setLastRelapseReason] = useState('');
+    const [headerText, setHeaderText] = useState('you are goated!');
 
     useEffect(() => {
         checkStreak();
         loadUrges();
+        loadLastRelapse();
         const interval = setInterval(updateTimer, 60000); // Update every minute
         return () => clearInterval(interval);
     }, [startDate]);
+
+    useEffect(() => {
+        const texts = [
+            'you are goated!',
+            `Urges Won: ${urgesWon}`,
+            lastRelapseReason ? `Last: ${lastRelapseReason}` : 'Keep pushing!'
+        ];
+        let index = 0;
+
+        const interval = setInterval(() => {
+            index = (index + 1) % texts.length;
+            setHeaderText(texts[index]);
+        }, 3000); // Slide every 3 seconds
+
+        return () => clearInterval(interval);
+    }, [urgesWon, lastRelapseReason]);
 
     const checkStreak = async () => {
         try {
@@ -54,6 +77,18 @@ export default function Landing() {
         }
     };
 
+    const loadLastRelapse = async () => {
+        try {
+            const logs = await getRelapseLogs();
+            if (logs.length > 0) {
+                const last = logs[logs.length - 1];
+                setLastRelapseReason(last.reason || '');
+            }
+        } catch (error) {
+            console.error('Error loading last relapse:', error);
+        }
+    };
+
     const startStreak = async () => {
         const now = Date.now();
         try {
@@ -68,11 +103,13 @@ export default function Landing() {
 
     const resetStreak = async () => {
         try {
-            await saveRelapseLog(); // Log the relapse before clearing
+            await saveRelapseLog(relapseReason); // Log the relapse with reason
             await clearStreak();
             setStartDate(null);
             setElapsedTime({ days: 0, hours: 0, minutes: 0 });
             setMarkedDates({});
+            setRelapseReason(''); // Clear input
+            loadLastRelapse(); // Refresh last reason
         } catch (error) {
             console.error('Error resetting streak:', error);
         }
@@ -133,7 +170,7 @@ export default function Landing() {
             <ScrollView contentContainerStyle={styles.scrollContent}>
                 {/* Header */}
                 <View style={styles.header}>
-                    <Text style={styles.headerText}>you are goated!</Text>
+                    <Text style={styles.headerText}>{headerText}</Text>
                 </View>
 
                 {/* Streak Status & Urges Won */}
@@ -275,21 +312,33 @@ export default function Landing() {
             {/* Reset Confirmation Modal */}
             <Modal
                 visible={showResetModal}
-                animationType="fade"
+                animationType="slide"
                 transparent={true}
                 onRequestClose={() => setShowResetModal(false)}
             >
-                <View style={styles.modalOverlay}>
+                <KeyboardAvoidingView
+                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                    style={styles.modalOverlay}
+                >
                     <View style={styles.modalContent}>
-                        <Text style={styles.modalTitle}>End Streak?</Text>
-                        <Text style={styles.modalMessage}>Are you sure you want to end your current streak?</Text>
+                        <Text style={styles.modalTitle}>What happened?</Text>
+                        <Text style={styles.modalMessage}>Breaking the streak is part of the journey. Why did you give in?</Text>
+
+                        <TextInput
+                            style={styles.input}
+                            placeholder="e.g., Stress, Boredom, Triggered by..."
+                            placeholderTextColor="#666"
+                            value={relapseReason}
+                            onChangeText={setRelapseReason}
+                            multiline
+                        />
 
                         <View style={styles.modalActions}>
                             <TouchableOpacity
                                 style={[styles.modalButton, styles.cancelButton]}
                                 onPress={() => setShowResetModal(false)}
                             >
-                                <Text style={styles.cancelButtonText}>No</Text>
+                                <Text style={styles.cancelButtonText}>Cancel</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity
@@ -299,11 +348,11 @@ export default function Landing() {
                                     setShowResetModal(false);
                                 }}
                             >
-                                <Text style={styles.saveButtonText}>Yes</Text>
+                                <Text style={styles.saveButtonText}>Reset Streak</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
-                </View>
+                </KeyboardAvoidingView>
             </Modal>
         </SafeAreaView>
     );

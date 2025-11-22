@@ -10,6 +10,7 @@ export interface UrgeLog {
 export interface RelapseLog {
     id: string;
     date: string;
+    reason?: string;
 }
 
 const KEYS = {
@@ -51,12 +52,13 @@ export const getRelapseLogs = async (): Promise<RelapseLog[]> => {
     }
 };
 
-export const saveRelapseLog = async (): Promise<void> => {
+export const saveRelapseLog = async (reason?: string): Promise<void> => {
     try {
         const logs = await getRelapseLogs();
         const newLog: RelapseLog = {
             id: Date.now().toString(),
             date: new Date().toISOString(),
+            reason: reason || 'No reason provided',
         };
         logs.push(newLog);
         await AsyncStorage.setItem(KEYS.RELAPSE_LOG, JSON.stringify(logs));
