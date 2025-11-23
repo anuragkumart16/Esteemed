@@ -6,6 +6,7 @@ import 'react-calendar/dist/Calendar.css';
 import { format } from 'date-fns';
 import { X } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
+import Link from 'next/link';
 
 export default function LandingPage() {
   const [userId, setUserId] = useState<string | null>(null);
@@ -82,7 +83,7 @@ export default function LandingPage() {
   // Header rotation
   useEffect(() => {
     const texts = [
-      'you are goated!',
+      'You are goated!',
       `Urges Won: ${urgesWon}`,
       lastRelapseReason ? `Last: ${lastRelapseReason}` : 'Keep pushing!'
     ];
@@ -176,6 +177,13 @@ export default function LandingPage() {
           </button>
         )}
 
+        {/* 30s Timer Button */}
+        <Link href="/timer" className="block w-full mb-6">
+          <div className="bg-indigo-600 rounded-2xl p-4 flex justify-center items-center shadow-lg shadow-indigo-900/20 hover:bg-indigo-500 transition-all active:scale-95">
+            <span className="text-white font-semibold text-lg">Panic Button (30s)</span>
+          </div>
+        </Link>
+
         {/* Calendar */}
         <div className="bg-zinc-900 rounded-xl p-4 mb-6 border border-zinc-800 overflow-hidden">
           <style jsx global>{`
@@ -257,7 +265,7 @@ export default function LandingPage() {
             <textarea
               value={urgeTrigger}
               onChange={(e) => setUrgeTrigger(e.target.value)}
-              placeholder="e.g., Boredom, Stress..."
+              placeholder="e.g., Instagram, Boredom, Stress..."
               className="w-full bg-zinc-800 rounded-xl p-4 text-white mb-4 min-h-[80px] resize-none focus:outline-none focus:ring-1 focus:ring-white transition-all"
             />
 
@@ -265,7 +273,7 @@ export default function LandingPage() {
             <textarea
               value={urgeVictory}
               onChange={(e) => setUrgeVictory(e.target.value)}
-              placeholder="e.g., Went for a walk, Meditated..."
+              placeholder="e.g., Went for a walk, Meditated, etc..."
               className="w-full bg-zinc-800 rounded-xl p-4 text-white mb-6 min-h-[80px] resize-none focus:outline-none focus:ring-1 focus:ring-white transition-all"
             />
 
@@ -292,12 +300,12 @@ export default function LandingPage() {
         <div className="fixed inset-0 bg-black/90 backdrop-blur-sm flex justify-center items-center p-4 z-50 animate-in fade-in duration-200">
           <div className="bg-zinc-900 rounded-3xl p-6 w-full max-w-md border border-zinc-800 shadow-2xl">
             <h2 className="text-2xl font-bold text-white mb-4 text-center">What happened?</h2>
-            <p className="text-zinc-400 text-center mb-6">Breaking the streak is part of the journey. Why did you give in?</p>
+            <p className="text-zinc-400 text-center mb-6">Breaking the streak is part of the journey. What triggered you to give in?</p>
 
             <textarea
               value={relapseReason}
               onChange={(e) => setRelapseReason(e.target.value)}
-              placeholder="e.g., Stress, Boredom, Triggered by..."
+              placeholder="e.g. Triggered by instagram, boredom, stress, etc."
               className="w-full bg-zinc-800 rounded-xl p-4 text-white mb-6 min-h-[80px] resize-none focus:outline-none focus:ring-1 focus:ring-white transition-all"
             />
 
