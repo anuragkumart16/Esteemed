@@ -200,9 +200,9 @@ export default function StatsPage() {
                 Analyse with buddy
             </Link>
 
-            <button className="w-full bg-zinc-900 text-white rounded-full py-4 text-center font-bold hover:bg-zinc-800 transition-colors">
+            <Link href="/history" className="block w-full bg-zinc-900 text-white rounded-full py-4 text-center font-bold hover:bg-zinc-800 transition-colors">
                 View History
-            </button>
+            </Link>
 
             <BottomNav />
         </div>
