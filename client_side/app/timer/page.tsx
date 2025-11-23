@@ -80,7 +80,7 @@ export default function TimerPage() {
     };
 
     return (
-        <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
+        <div className="min-h-screen bg-zinc-950 text-zinc-50 flex flex-col items-center justify-center p-6 relative overflow-hidden">
             {/* Background decoration */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
                 <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-purple-900/20 rounded-full blur-3xl"></div>
@@ -120,7 +120,7 @@ export default function TimerPage() {
                             fill="transparent"
                             strokeDasharray={2 * Math.PI * 120}
                             strokeDashoffset={2 * Math.PI * 120 * (1 - progress / 100)}
-                            className="text-white transition-all duration-1000 ease-linear"
+                            className="text-zinc-50 transition-all duration-1000 ease-linear"
                             strokeLinecap="round"
                         />
                     </svg>
@@ -134,14 +134,14 @@ export default function TimerPage() {
                 <div className="flex gap-6">
                     <button
                         onClick={toggleTimer}
-                        className="w-16 h-16 bg-white text-black rounded-full flex items-center justify-center hover:bg-zinc-200 transition-all active:scale-95 shadow-lg shadow-white/10"
+                        className="w-16 h-16 bg-zinc-100 text-zinc-900 rounded-full flex items-center justify-center hover:bg-zinc-200 transition-all active:scale-95 shadow-lg shadow-white/10"
                     >
                         {isActive ? <Pause size={28} fill="currentColor" /> : <Play size={28} fill="currentColor" className="ml-1" />}
                     </button>
 
                     <button
                         onClick={resetTimer}
-                        className="w-16 h-16 bg-zinc-900 text-white rounded-full flex items-center justify-center hover:bg-zinc-800 transition-all active:scale-95 border border-zinc-800"
+                        className="w-16 h-16 bg-zinc-900 text-zinc-50 rounded-full flex items-center justify-center hover:bg-zinc-800 transition-all active:scale-95 border border-zinc-800"
                     >
                         <RotateCcw size={24} />
                     </button>
@@ -183,7 +183,7 @@ export default function TimerPage() {
                             </button>
                             <button
                                 onClick={logUrge}
-                                className="flex-1 bg-white text-black py-4 rounded-2xl font-bold hover:bg-zinc-200 transition-colors"
+                                className="flex-1 bg-zinc-100 text-zinc-900 py-4 rounded-2xl font-bold hover:bg-zinc-200 transition-colors"
                             >
                                 Log Victory
                             </button>

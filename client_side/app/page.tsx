@@ -48,12 +48,12 @@ export default function Home() {
 
   if (showSplash) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white relative overflow-hidden">
+      <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-950 text-zinc-50 relative overflow-hidden">
         {/* Top Curve */}
-        <div className="absolute top-[-10%] left-[-20%] w-[140%] h-[50%] bg-white rounded-b-[100%] z-0"></div>
+        <div className="absolute top-[-10%] left-[-20%] w-[140%] h-[50%] bg-zinc-100 rounded-b-[100%] z-0"></div>
 
         {/* Bottom Curve */}
-        <div className="absolute bottom-[-10%] left-[-20%] w-[140%] h-[50%] bg-white rounded-t-[100%] z-0"></div>
+        <div className="absolute bottom-[-10%] left-[-20%] w-[140%] h-[50%] bg-zinc-100 rounded-t-[100%] z-0"></div>
 
         <div className="z-10 flex flex-col items-center">
           <p className="text-sm font-light tracking-widest uppercase mb-2">Delusion</p>
@@ -65,9 +65,9 @@ export default function Home() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-between bg-black text-white relative overflow-hidden px-6 py-12">
+    <div className="flex min-h-screen flex-col items-center justify-between bg-zinc-950 text-zinc-50 relative overflow-hidden px-6 py-12">
       {/* Top Curve */}
-      <div className="absolute top-[-15%] left-[-20%] w-[140%] h-[45%] bg-white rounded-b-[100%] z-0 transition-all duration-700 ease-in-out"
+      <div className="absolute top-[-15%] left-[-20%] w-[140%] h-[45%] bg-zinc-100 rounded-b-[100%] z-0 transition-all duration-700 ease-in-out"
         style={{ transform: `translateY(${currentSlide * -10}%)` }}></div>
 
       <div className="z-10 flex-1 flex flex-col items-center justify-center text-center mt-20 w-full max-w-md relative">
@@ -128,7 +128,7 @@ export default function Home() {
           {[0, 1, 2, 3].map((idx) => (
             <div
               key={idx}
-              className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentSlide ? 'w-8 bg-white' : 'w-2 bg-zinc-700'}`}
+              className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentSlide ? 'w-8 bg-zinc-100' : 'w-2 bg-zinc-700'}`}
             />
           ))}
         </div>
@@ -136,7 +136,7 @@ export default function Home() {
         <button
           type="button"
           onClick={handleContinue}
-          className="w-full rounded-full bg-white py-4 text-black font-bold text-lg hover:bg-gray-200 transition-colors shadow-lg shadow-white/10"
+          className="w-full rounded-full bg-zinc-100 py-4 text-zinc-900 font-bold text-lg hover:bg-zinc-200 transition-colors shadow-lg shadow-white/10"
         >
           {currentSlide === 3 ? "Get Started" : "Continue"}
         </button>

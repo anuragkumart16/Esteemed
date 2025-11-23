@@ -139,22 +139,22 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-4 pb-24 flex flex-col items-center">
+    <div className="min-h-screen bg-zinc-950 text-zinc-50 p-4 pb-24 flex flex-col items-center">
       <div className="w-full max-w-md">
         {/* Header */}
-        <div className="bg-white rounded-full py-4 px-6 mb-6 flex justify-center items-center shadow-lg shadow-white/10">
-          <h1 className="text-black text-lg font-medium animate-fade-in">{headerText}</h1>
+        <div className="bg-zinc-100 rounded-full py-4 px-6 mb-6 flex justify-center items-center shadow-lg shadow-white/10">
+          <h1 className="text-zinc-900 text-lg font-medium animate-fade-in">{headerText}</h1>
         </div>
 
         {/* Streak Status */}
         <div className="bg-zinc-900 rounded-xl p-4 mb-6 flex justify-between items-center border border-zinc-800">
-          <span className="text-white text-sm font-medium">{streakStartDate ? 'Keep going!' : 'No active streak'}</span>
+          <span className="text-zinc-50 text-sm font-medium">{streakStartDate ? 'Keep going!' : 'No active streak'}</span>
           {urgesWon > 0 && <span className="text-emerald-400 text-sm font-bold">Urges Won: {urgesWon}</span>}
         </div>
 
         {/* Timer / Start Button */}
         {streakStartDate ? (
-          <div className="bg-white rounded-3xl p-6 mb-6 flex justify-around items-baseline text-black shadow-xl shadow-white/5">
+          <div className="bg-zinc-100 rounded-3xl p-6 mb-6 flex justify-around items-baseline text-zinc-900 shadow-xl shadow-white/5">
             <div className="flex items-baseline">
               <span className="text-5xl font-light tracking-tighter">{elapsedTime.days.toString().padStart(2, '0')}</span>
               <span className="text-xs ml-1 font-medium text-zinc-500">Days</span>
@@ -171,16 +171,16 @@ export default function LandingPage() {
         ) : (
           <button
             onClick={startStreak}
-            className="w-full bg-white rounded-3xl py-8 mb-6 flex justify-center items-center hover:bg-zinc-200 transition-colors"
+            className="w-full bg-zinc-100 rounded-3xl py-8 mb-6 flex justify-center items-center hover:bg-zinc-200 transition-colors"
           >
-            <span className="text-black text-2xl font-light">Start Streak</span>
+            <span className="text-zinc-900 text-2xl font-light">Start Streak</span>
           </button>
         )}
 
         {/* 30s Timer Button */}
         <Link href="/timer" className="block w-full mb-6">
-          <div className="bg-indigo-600 rounded-2xl p-4 flex justify-center items-center shadow-lg shadow-indigo-900/20 hover:bg-indigo-500 transition-all active:scale-95">
-            <span className="text-white font-semibold text-lg">Panic Button (30s)</span>
+          <div className="bg-blue-500 rounded-2xl p-4 flex justify-center items-center shadow-lg shadow-blue-900/20 hover:bg-blue-500 transition-all active:scale-95">
+            <span className="text-zinc-50 font-semibold text-lg">Panic Button (30s)</span>
           </div>
         </Link>
 
@@ -228,7 +228,7 @@ export default function LandingPage() {
             }
           `}</style>
           <Calendar
-            className="bg-transparent text-white w-full border-none"
+            className="bg-transparent text-zinc-50 w-full border-none"
             tileClassName={({ date, view }) => {
               if (view === 'month' && streakStartDate && date >= streakStartDate && date <= new Date()) {
                 return 'streak-day';
@@ -239,7 +239,7 @@ export default function LandingPage() {
         </div>
 
         {/* Actions */}
-        <div className="bg-white rounded-3xl p-6 flex flex-col gap-4 shadow-xl shadow-white/5">
+        <div className="bg-zinc-100 rounded-3xl p-6 flex flex-col gap-4 shadow-xl shadow-white/5">
           <button
             onClick={() => setShowResetModal(true)}
             className="w-full bg-slate-900 text-white py-4 rounded-2xl font-medium hover:bg-slate-800 transition-colors"
@@ -286,7 +286,7 @@ export default function LandingPage() {
               </button>
               <button
                 onClick={logUrge}
-                className="flex-1 bg-white text-black py-4 rounded-2xl font-bold hover:bg-zinc-200 transition-colors"
+                className="flex-1 bg-zinc-100 text-zinc-900 py-4 rounded-2xl font-bold hover:bg-zinc-200 transition-colors"
               >
                 Log Victory
               </button>
@@ -318,7 +318,7 @@ export default function LandingPage() {
               </button>
               <button
                 onClick={resetStreak}
-                className="flex-1 bg-white text-black py-4 rounded-2xl font-bold hover:bg-zinc-200 transition-colors"
+                className="flex-1 bg-zinc-100 text-zinc-900 py-4 rounded-2xl font-bold hover:bg-zinc-200 transition-colors"
               >
                 Reset Streak
               </button>
