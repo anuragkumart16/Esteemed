@@ -20,6 +20,10 @@ export default function AccountPage() {
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
+    // Feedback State
+    const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+    const [feedbackText, setFeedbackText] = useState('');
+
     useEffect(() => {
         // Check local storage for mock login
         const email = localStorage.getItem('userEmail');
@@ -67,6 +71,30 @@ export default function AccountPage() {
         setCurrentPassword('');
         setNewPassword('');
         setConfirmPassword('');
+    };
+
+    const handleFeedbackSubmit = async () => {
+        if (!feedbackText.trim()) return;
+
+        try {
+            const userId = localStorage.getItem('userId');
+            const res = await fetch('/api/feedback', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, feedback: feedbackText }),
+            });
+
+            if (res.ok) {
+                alert('Thank you for your feedback!');
+                setFeedbackText('');
+                setShowFeedbackModal(false);
+            } else {
+                alert('Failed to submit feedback. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error submitting feedback:', error);
+            alert('An error occurred. Please try again.');
+        }
     };
 
     if (!isLoggedIn) {
@@ -176,6 +204,17 @@ export default function AccountPage() {
                         </button>
                         <div className="h-px bg-zinc-800 mx-5" />
                         <button
+                            onClick={() => setShowFeedbackModal(true)}
+                            className="w-full p-5 flex items-center justify-between hover:bg-zinc-800 transition-colors"
+                        >
+                            <div className="flex items-center gap-4">
+                                <Mail className="text-white" size={20} />
+                                <span className="font-medium">Send Feedback</span>
+                            </div>
+                            <ChevronRight className="text-zinc-500" size={20} />
+                        </button>
+                        <div className="h-px bg-zinc-800 mx-5" />
+                        <button
                             onClick={handleLogout}
                             className="w-full p-5 flex items-center justify-between hover:bg-zinc-800 transition-colors"
                         >
@@ -247,6 +286,38 @@ export default function AccountPage() {
                                 className="flex-1 bg-white text-black py-4 rounded-2xl font-bold hover:bg-zinc-200 transition-colors"
                             >
                                 Change
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Feedback Modal */}
+            {showFeedbackModal && (
+                <div className="fixed inset-0 bg-black/90 backdrop-blur-sm flex justify-center items-center p-4 z-50 animate-in fade-in duration-200">
+                    <div className="bg-zinc-900 rounded-3xl p-6 w-full max-w-md border border-zinc-800 shadow-2xl">
+                        <h2 className="text-2xl font-bold text-white mb-4 text-center">Send Feedback</h2>
+                        <p className="text-zinc-400 text-center mb-6">We'd love to hear your thoughts! Let us know how we can improve.</p>
+
+                        <textarea
+                            value={feedbackText}
+                            onChange={(e) => setFeedbackText(e.target.value)}
+                            placeholder="Type your feedback here..."
+                            className="w-full bg-zinc-800 rounded-xl p-4 text-white mb-6 min-h-[120px] resize-none focus:outline-none focus:ring-1 focus:ring-white transition-all"
+                        />
+
+                        <div className="flex gap-4">
+                            <button
+                                onClick={() => setShowFeedbackModal(false)}
+                                className="flex-1 bg-zinc-800 text-white py-4 rounded-2xl font-semibold hover:bg-zinc-700 transition-colors"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleFeedbackSubmit}
+                                className="flex-1 bg-white text-black py-4 rounded-2xl font-bold hover:bg-zinc-200 transition-colors"
+                            >
+                                Send
                             </button>
                         </div>
                     </div>

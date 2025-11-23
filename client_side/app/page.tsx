@@ -16,14 +16,21 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
+    const hasOnboarded = localStorage.getItem("hasOnboarded");
+    if (hasOnboarded) {
+      router.replace("/landing");
+      return;
+    }
+
     const timer = setTimeout(() => {
       setShowSplash(false);
     }, 3000); // Show splash for 3 seconds
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [router]);
 
   const handleContinue = () => {
+    localStorage.setItem("hasOnboarded", "true");
     if (window.ReactNativeWebView) {
       window.ReactNativeWebView.postMessage("onboarding_complete");
     } else {
