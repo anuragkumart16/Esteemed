@@ -142,8 +142,9 @@ export default function LandingPage() {
     <div className="min-h-screen bg-zinc-950 text-zinc-50 p-4 pb-24 flex flex-col items-center">
       <div className="w-full max-w-md">
         {/* Header */}
-        <div className="bg-zinc-100 rounded-full py-4 px-6 mb-6 flex justify-center items-center shadow-lg shadow-white/10">
-          <h1 className="text-zinc-900 text-lg font-medium animate-fade-in">{headerText}</h1>
+        <div className="bg-zinc-100 rounded-xl py-4 px-6 mb-6 flex justify-center items-center shadow-lg shadow-white/10">
+          <h1 className="text-zinc-900 text-lg font-medium animate-fade-in">Once we have enough data, ML engines will jump to help. Keep Documenting!</h1>
+          {/* <h1 className="text-zinc-900 text-lg font-medium animate-fade-in">{headerText}</h1> */}
         </div>
 
         {/* Streak Status */}
