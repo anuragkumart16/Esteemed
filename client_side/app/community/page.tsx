@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
+import Header from '@/components/Header';
 import BottomNav from '@/components/BottomNav';
 import { ChevronLeft, Send } from 'lucide-react';
 import Link from 'next/link';
@@ -120,16 +121,12 @@ export default function CommunityPage() {
     return (
         <div className="min-h-screen bg-black text-white flex flex-col">
             {/* Header */}
-            <div className="bg-black border-b border-zinc-900 p-4 flex justify-between items-center sticky top-0 z-10">
-                <Link href="/landing" className="p-2">
-                    <ChevronLeft size={24} />
-                </Link>
-                <h1 className="text-lg font-bold">Community Chat</h1>
+            <Header title="Community Chat" showBack backLink="/landing">
                 <div className="bg-zinc-900 px-3 py-1.5 rounded-full flex items-center gap-2">
                     <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
                     <span className="text-xs text-zinc-400 font-medium">{MOCK_USERS.length + 12} online</span>
                 </div>
-            </div>
+            </Header>
 
             {/* Chat Content */}
             <div className="flex-1 p-4 pb-24 overflow-y-auto">

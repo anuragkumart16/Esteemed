@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import Header from '@/components/Header';
 import BottomNav from '@/components/BottomNav';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
 import { ArrowRight, History } from 'lucide-react';
@@ -102,109 +103,112 @@ export default function StatsPage() {
     };
 
     return (
-        <div className="min-h-screen bg-black text-white p-4 pb-24">
-            <h1 className="text-3xl font-bold mb-8">Your Progress</h1>
+        <div className="min-h-screen bg-black text-white pb-24">
+            <Header title="Your progress" showBack backLink="landing" />
+            <div className="p-4">
 
-            {/* Summary Cards */}
-            <div className="grid grid-cols-3 gap-3 mb-8">
-                <div className="bg-zinc-900 rounded-2xl p-4 flex flex-col items-center">
-                    <span className="text-2xl font-bold mb-1">{currentStreak}</span>
-                    <span className="text-xs text-zinc-500 text-center">Current Streak</span>
-                </div>
-                <div className="bg-zinc-900 rounded-2xl p-4 flex flex-col items-center">
-                    <span className="text-2xl font-bold mb-1">{urgesWon}</span>
-                    <span className="text-xs text-zinc-500 text-center">Urges Won</span>
-                </div>
-                <div className="bg-zinc-900 rounded-2xl p-4 flex flex-col items-center">
-                    <span className="text-2xl font-bold mb-1">{streakBroken}</span>
-                    <span className="text-xs text-zinc-500 text-center">Streak Broken</span>
-                </div>
-            </div>
 
-            {/* Carousel / Charts */}
-            <div className="space-y-8 mb-8">
-                {/* Weekly Progress */}
-                <div>
-                    <h2 className="text-xl font-semibold mb-4">Weekly Progress</h2>
-                    <div className="bg-zinc-900 rounded-2xl p-4 h-64 w-full">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart data={progressData}>
-                                <defs>
-                                    <linearGradient id="colorProgress" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
-                                        <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-                                    </linearGradient>
-                                </defs>
-                                <XAxis dataKey="name" stroke="#52525b" fontSize={12} tickLine={false} axisLine={false} />
-                                <Tooltip
-                                    contentStyle={{ backgroundColor: '#18181b', border: 'none', borderRadius: '8px' }}
-                                    itemStyle={{ color: '#fff' }}
-                                />
-                                <Area type="monotone" dataKey="value" stroke="#10b981" strokeWidth={2} fillOpacity={1} fill="url(#colorProgress)" />
-                            </AreaChart>
-                        </ResponsiveContainer>
+                {/* Summary Cards */}
+                <div className="grid grid-cols-3 gap-3 mb-8">
+                    <div className="bg-zinc-900 rounded-2xl p-4 flex flex-col items-center">
+                        <span className="text-2xl font-bold mb-1">{currentStreak}</span>
+                        <span className="text-xs text-zinc-500 text-center">Current Streak</span>
+                    </div>
+                    <div className="bg-zinc-900 rounded-2xl p-4 flex flex-col items-center">
+                        <span className="text-2xl font-bold mb-1">{urgesWon}</span>
+                        <span className="text-xs text-zinc-500 text-center">Urges Won</span>
+                    </div>
+                    <div className="bg-zinc-900 rounded-2xl p-4 flex flex-col items-center">
+                        <span className="text-2xl font-bold mb-1">{streakBroken}</span>
+                        <span className="text-xs text-zinc-500 text-center">Streak Broken</span>
                     </div>
                 </div>
 
-                {/* Streak Restarts */}
-                <div>
-                    <h2 className="text-xl font-semibold mb-4">Streak Restarts</h2>
-                    <div className="bg-zinc-900 rounded-2xl p-4 h-64 w-full">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart data={relapseData}>
-                                <defs>
-                                    <linearGradient id="colorRelapse" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#ef4444" stopOpacity={0.3} />
-                                        <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
-                                    </linearGradient>
-                                </defs>
-                                <XAxis dataKey="name" stroke="#52525b" fontSize={12} tickLine={false} axisLine={false} />
-                                <Tooltip
-                                    contentStyle={{ backgroundColor: '#18181b', border: 'none', borderRadius: '8px' }}
-                                    itemStyle={{ color: '#fff' }}
-                                />
-                                <Area type="monotone" dataKey="value" stroke="#ef4444" strokeWidth={2} fillOpacity={1} fill="url(#colorRelapse)" />
-                            </AreaChart>
-                        </ResponsiveContainer>
-                    </div>
-                </div>
-            </div>
-
-            {/* Top Triggers */}
-            <div className="mb-8">
-                <h2 className="text-xl font-semibold mb-4">Top Triggers</h2>
-                {topTriggers.length > 0 ? (
-                    <div className="space-y-3">
-                        {topTriggers.map((trigger, index) => (
-                            <div key={index} className="bg-zinc-900 rounded-xl p-4">
-                                <div className="flex justify-between items-center mb-2">
-                                    <span className="font-medium">{trigger.category}</span>
-                                    <span className="font-bold">{trigger.count}</span>
-                                </div>
-                                <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
-                                    <div
-                                        className="h-full bg-white rounded-full"
-                                        style={{ width: `${(trigger.count / Math.max(...topTriggers.map(t => t.count))) * 100}%` }}
+                {/* Carousel / Charts */}
+                <div className="space-y-8 mb-8">
+                    {/* Weekly Progress */}
+                    <div>
+                        <h2 className="text-xl font-semibold mb-4">Weekly Progress</h2>
+                        <div className="bg-zinc-900 rounded-2xl p-4 h-64 w-full">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <AreaChart data={progressData}>
+                                    <defs>
+                                        <linearGradient id="colorProgress" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
+                                            <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                                        </linearGradient>
+                                    </defs>
+                                    <XAxis dataKey="name" stroke="#52525b" fontSize={12} tickLine={false} axisLine={false} />
+                                    <Tooltip
+                                        contentStyle={{ backgroundColor: '#18181b', border: 'none', borderRadius: '8px' }}
+                                        itemStyle={{ color: '#fff' }}
                                     />
-                                </div>
-                            </div>
-                        ))}
+                                    <Area type="monotone" dataKey="value" stroke="#10b981" strokeWidth={2} fillOpacity={1} fill="url(#colorProgress)" />
+                                </AreaChart>
+                            </ResponsiveContainer>
+                        </div>
                     </div>
-                ) : (
-                    <p className="text-zinc-500 text-center py-4">No triggers logged yet</p>
-                )}
+
+                    {/* Streak Restarts */}
+                    <div>
+                        <h2 className="text-xl font-semibold mb-4">Streak Restarts</h2>
+                        <div className="bg-zinc-900 rounded-2xl p-4 h-64 w-full">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <AreaChart data={relapseData}>
+                                    <defs>
+                                        <linearGradient id="colorRelapse" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="#ef4444" stopOpacity={0.3} />
+                                            <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
+                                        </linearGradient>
+                                    </defs>
+                                    <XAxis dataKey="name" stroke="#52525b" fontSize={12} tickLine={false} axisLine={false} />
+                                    <Tooltip
+                                        contentStyle={{ backgroundColor: '#18181b', border: 'none', borderRadius: '8px' }}
+                                        itemStyle={{ color: '#fff' }}
+                                    />
+                                    <Area type="monotone" dataKey="value" stroke="#ef4444" strokeWidth={2} fillOpacity={1} fill="url(#colorRelapse)" />
+                                </AreaChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Top Triggers */}
+                <div className="mb-8">
+                    <h2 className="text-xl font-semibold mb-4">Top Triggers</h2>
+                    {topTriggers.length > 0 ? (
+                        <div className="space-y-3">
+                            {topTriggers.map((trigger, index) => (
+                                <div key={index} className="bg-zinc-900 rounded-xl p-4">
+                                    <div className="flex justify-between items-center mb-2">
+                                        <span className="font-medium">{trigger.category}</span>
+                                        <span className="font-bold">{trigger.count}</span>
+                                    </div>
+                                    <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                                        <div
+                                            className="h-full bg-white rounded-full"
+                                            style={{ width: `${(trigger.count / Math.max(...topTriggers.map(t => t.count))) * 100}%` }}
+                                        />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <p className="text-zinc-500 text-center py-4">No triggers logged yet</p>
+                    )}
+                </div>
+
+                {/* Action Buttons */}
+                <Link href="/buddy" className="block w-full bg-white text-black rounded-full py-4 text-center font-bold mb-4 hover:bg-zinc-200 transition-colors">
+                    Analyse with buddy
+                </Link>
+
+                <Link href="/history" className="block w-full bg-zinc-900 text-white rounded-full py-4 text-center font-bold hover:bg-zinc-800 transition-colors">
+                    View History
+                </Link>
+
+                <BottomNav />
             </div>
-
-            {/* Action Buttons */}
-            <Link href="/buddy" className="block w-full bg-white text-black rounded-full py-4 text-center font-bold mb-4 hover:bg-zinc-200 transition-colors">
-                Analyse with buddy
-            </Link>
-
-            <Link href="/history" className="block w-full bg-zinc-900 text-white rounded-full py-4 text-center font-bold hover:bg-zinc-800 transition-colors">
-                View History
-            </Link>
-
-            <BottomNav />
         </div>
     );
 }

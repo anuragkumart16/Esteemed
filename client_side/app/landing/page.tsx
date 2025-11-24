@@ -8,6 +8,8 @@ import { X } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
 import Link from 'next/link';
 
+import Header from '@/components/Header';
+
 export default function LandingPage() {
   const [userId, setUserId] = useState<string | null>(null);
   const [streakStartDate, setStreakStartDate] = useState<Date | null>(null);
@@ -161,11 +163,12 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-50 p-4 pb-24 flex flex-col items-center">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-zinc-950 text-zinc-50 pb-24 flex flex-col items-center">
+      <Header />
+      <div className="w-full max-w-md p-4">
         {/* Header */}
-        <div className="bg-zinc-100 rounded-3xl py-4 px-6 mb-6 flex justify-center items-center shadow-lg shadow-white/10">
-          <h1 className="text-zinc-900 text-lg text-center font-medium animate-fade-in">Once we have enough data, ML engines will jump to help. <span className="text-emerald-400">Keep Documenting!</span></h1>
+        <div className="bg-black-100 rounded-3xl py-4 px-6 mb-6 flex justify-center items-center shadow-md shadow-white/10 border-zinc-800 border">
+          <h1 className="text-white text-lg text-center font-medium animate-fade-in">Once we have enough data, ML engines will jump to help. <span className="text-emerald-400">Keep Documenting!</span></h1>
           {/* <h1 className="text-zinc-900 text-lg font-medium animate-fade-in">{headerText}</h1> */}
         </div>
 
