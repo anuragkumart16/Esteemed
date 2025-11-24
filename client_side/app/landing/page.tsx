@@ -19,6 +19,7 @@ export default function LandingPage() {
   // Modals
   const [showUrgeModal, setShowUrgeModal] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Form inputs
   const [urgeTrigger, setUrgeTrigger] = useState('');
@@ -54,6 +55,13 @@ export default function LandingPage() {
         if (user.relapses && user.relapses.length > 0) {
           setLastRelapseReason(user.relapses[user.relapses.length - 1].reason);
         }
+
+        // Track usage
+        await fetch('/api/user/usage', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: user.id }),
+        });
       }
     };
 
@@ -109,17 +117,25 @@ export default function LandingPage() {
   };
 
   const resetStreak = async () => {
-    if (!userId) return;
-    const res = await fetch('/api/streak/reset', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId, reason: relapseReason }),
-    });
-    if (res.ok) {
-      setStreakStartDate(null);
-      setLastRelapseReason(relapseReason);
-      setRelapseReason('');
-      setShowResetModal(false);
+    if (!userId || !relapseReason.trim() || isSubmitting) return;
+
+    setIsSubmitting(true);
+    try {
+      const res = await fetch('/api/streak/reset', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, reason: relapseReason }),
+      });
+      if (res.ok) {
+        setStreakStartDate(null);
+        setLastRelapseReason(relapseReason);
+        setRelapseReason('');
+        setShowResetModal(false);
+      }
+    } catch (error) {
+      console.error("Failed to reset streak", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -142,8 +158,8 @@ export default function LandingPage() {
     <div className="min-h-screen bg-zinc-950 text-zinc-50 p-4 pb-24 flex flex-col items-center">
       <div className="w-full max-w-md">
         {/* Header */}
-        <div className="bg-zinc-100 rounded-xl py-4 px-6 mb-6 flex justify-center items-center shadow-lg shadow-white/10">
-          <h1 className="text-zinc-900 text-lg font-medium animate-fade-in">Once we have enough data, ML engines will jump to help. Keep Documenting!</h1>
+        <div className="bg-zinc-100 rounded-3xl py-4 px-6 mb-6 flex justify-center items-center shadow-lg shadow-white/10">
+          <h1 className="text-zinc-900 text-lg text-center font-medium animate-fade-in">Once we have enough data, ML engines will jump to help. <span className="text-emerald-400">Keep Documenting!</span></h1>
           {/* <h1 className="text-zinc-900 text-lg font-medium animate-fade-in">{headerText}</h1> */}
         </div>
 
@@ -179,11 +195,21 @@ export default function LandingPage() {
         )}
 
         {/* 30s Timer Button */}
-        <Link href="/timer" className="block w-full mb-6">
-          <div className="bg-blue-500 rounded-2xl p-4 flex justify-center items-center shadow-lg shadow-blue-900/20 hover:bg-blue-500 transition-all active:scale-95">
-            <span className="text-zinc-50 font-semibold text-lg">Panic Button (30s)</span>
-          </div>
-        </Link>
+        <div onClick={async () => {
+          if (userId) {
+            await fetch('/api/user/panic', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ userId }),
+            });
+          }
+        }} className="w-full mb-6">
+          <Link href="/timer" className="block w-full">
+            <div className="bg-blue-500 rounded-2xl p-4 flex justify-center items-center shadow-lg shadow-blue-900/20 hover:bg-blue-500 transition-all active:scale-95">
+              <span className="text-zinc-50 font-semibold text-lg">Panic Button (30s)</span>
+            </div>
+          </Link>
+        </div>
 
         {/* Calendar */}
         <div className="bg-zinc-900 rounded-xl p-4 mb-6 border border-zinc-800 overflow-hidden">
