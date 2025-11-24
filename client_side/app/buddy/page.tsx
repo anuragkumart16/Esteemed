@@ -153,7 +153,7 @@ export default function BuddyPage() {
                 </div>
             </div>
 
-            <BottomNav />
+            {/* <BottomNav /> */}
         </div>
     );
 }
