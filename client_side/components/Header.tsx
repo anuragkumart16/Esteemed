@@ -16,7 +16,7 @@ export default function Header({ title, showBack = false, backLink = '/', childr
     const isLanding = pathname === '/landing' || pathname === '/';
 
     return (
-        <div className="flex justify-between items-center w-full py-2 px-6 bg-white text-black sticky top-0 z-10 border-b border-gray-200 rounded-b-3xl shadow-sm">
+        <div className="flex justify-between items-center w-full py-1 px-6 bg-white text-black sticky top-0 z-10 border-b border-gray-200 rounded-b-3xl shadow-sm">
             <div className="flex items-center gap-4">
                 {showBack && (
                     <Link href={backLink} className="p-2 -ml-2 hover:bg-gray-100 rounded-full transition-colors">
@@ -27,7 +27,7 @@ export default function Header({ title, showBack = false, backLink = '/', childr
                 {title ? (
                     <h1 className="text-xl ">{title}</h1>
                 ) : isLanding ? (
-                    <h1 className="text-xl">Hello Warrior!</h1>
+                    <h1 className="text-xl">Hello user!</h1>
                 ) : null}
             </div>
 
