@@ -20,6 +20,7 @@ export default function LandingPage() {
   const [showUrgeModal, setShowUrgeModal] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   // Form inputs
   const [urgeTrigger, setUrgeTrigger] = useState('');
@@ -117,7 +118,11 @@ export default function LandingPage() {
   };
 
   const resetStreak = async () => {
-    if (!userId || !relapseReason.trim() || isSubmitting) return;
+    if (!relapseReason.trim()) {
+      setErrorMessage('Please enter a reason before resetting.');
+      return;
+    }
+    if (!userId || isSubmitting) return;
 
     setIsSubmitting(true);
     try {
@@ -130,6 +135,7 @@ export default function LandingPage() {
         setStreakStartDate(null);
         setLastRelapseReason(relapseReason);
         setRelapseReason('');
+        setErrorMessage('');
         setShowResetModal(false);
       }
     } catch (error) {
@@ -331,10 +337,14 @@ export default function LandingPage() {
 
             <textarea
               value={relapseReason}
-              onChange={(e) => setRelapseReason(e.target.value)}
+              onChange={(e) => {
+                setRelapseReason(e.target.value);
+                if (e.target.value.trim()) setErrorMessage('');
+              }}
               placeholder="e.g. Triggered by instagram, boredom, stress, etc."
-              className="w-full bg-zinc-800 rounded-xl p-4 text-white mb-6 min-h-[80px] resize-none focus:outline-none focus:ring-1 focus:ring-white transition-all"
+              className="w-full bg-zinc-800 rounded-xl p-4 text-white mb-2 min-h-[80px] resize-none focus:outline-none focus:ring-1 focus:ring-white transition-all"
             />
+            {errorMessage && <p className="text-red-400 text-sm mb-4 text-center animate-pulse">{errorMessage}</p>}
 
             <div className="flex gap-4">
               <button
