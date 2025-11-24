@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import UrgePreview from "@/components/onboarding/UrgePreview";
 import RelapsePreview from "@/components/onboarding/RelapsePreview";
 import PanicPreview from "@/components/onboarding/PanicPreview";
+import BuddyPreview from "@/components/onboarding/BuddyPreview";
 
 declare global {
   interface Window {
@@ -34,7 +35,7 @@ export default function Home() {
   }, [router]);
 
   const handleContinue = () => {
-    if (currentSlide < 3) {
+    if (currentSlide < 4) {
       setCurrentSlide(prev => prev + 1);
     } else {
       localStorage.setItem("hasOnboarded", "true");
@@ -120,12 +121,25 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Slide 4: Buddy AI */}
+        <div className={`absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500 ${currentSlide === 4 ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full scale-90 opacity-60 blur-[1px]">
+            <BuddyPreview />
+          </div>
+          <div className="z-20 bg-black/60 backdrop-blur-sm p-6 rounded-3xl border border-white/10 shadow-2xl">
+            <h2 className="text-2xl font-bold mb-3">Meet Buddy AI</h2>
+            <p className="text-zinc-300">
+              Your personal chatbot to navigate urges. Talk through your feelings and stay in control.
+            </p>
+          </div>
+        </div>
+
       </div>
 
       <div className="z-10 w-full max-w-md mb-8">
         {/* Progress Indicators */}
         <div className="flex justify-center gap-2 mb-6">
-          {[0, 1, 2, 3].map((idx) => (
+          {[0, 1, 2, 3, 4].map((idx) => (
             <div
               key={idx}
               className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentSlide ? 'w-8 bg-zinc-100' : 'w-2 bg-zinc-700'}`}
@@ -138,7 +152,7 @@ export default function Home() {
           onClick={handleContinue}
           className="w-full rounded-full bg-zinc-100 py-4 text-zinc-900 font-bold text-lg hover:bg-zinc-200 transition-colors shadow-lg shadow-white/10"
         >
-          {currentSlide === 3 ? "Get Started" : "Continue"}
+          {currentSlide === 4 ? "Get Started" : "Continue"}
         </button>
       </div>
     </div>
