@@ -11,30 +11,30 @@ export default function BottomNav() {
 
     return (
         <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 pb-safe pt-2 px-6 rounded-t-3xl shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-50">
-            <div className="flex justify-between items-center max-w-md mx-auto h-16">
+            <div className="flex justify-between items-center max-w-md mx-auto h-12">
                 <Link href="/stats" className={`flex flex-col items-center gap-1 ${isActive('/stats') ? 'text-black' : 'text-gray-400'}`}>
                     <BarChart2 size={24} strokeWidth={isActive('/stats') ? 2.5 : 2} />
-                    <span className="text-[10px] font-medium">Stats</span>
+                    {/* <span className="text-[10px] font-medium">Stats</span> */}
                 </Link>
 
                 <Link href="/buddy" className={`flex flex-col items-center gap-1 ${isActive('/buddy') ? 'text-black' : 'text-gray-400'}`}>
                     <Heart size={24} strokeWidth={isActive('/buddy') ? 2.5 : 2} />
-                    <span className="text-[10px] font-medium">Buddy</span>
+                    {/* <span className="text-[10px] font-medium">Buddy</span> */}
                 </Link>
 
                 <Link href="/landing" className={`flex flex-col items-center gap-1 ${isActive('/landing') ? 'text-black' : 'text-gray-400'}`}>
                     <Home size={24} strokeWidth={isActive('/landing') ? 2.5 : 2} />
-                    <span className="text-[10px] font-medium">Home</span>
+                    {/* <span className="text-[10px] font-medium">Home</span> */}
                 </Link>
 
                 <Link href="/history" className={`flex flex-col items-center gap-1 ${isActive('/history') ? 'text-black' : 'text-gray-400'}`}>
                     <History size={24} strokeWidth={isActive('/history') ? 2.5 : 2} />
-                    <span className="text-[10px] font-medium">History</span>
+                    {/* <span className="text-[10px] font-medium">History</span> */}
                 </Link>
 
                 <Link href="/community" className={`flex flex-col items-center gap-1 ${isActive('/community') ? 'text-black' : 'text-gray-400'}`}>
                     <Users size={24} strokeWidth={isActive('/community') ? 2.5 : 2} />
-                    <span className="text-[10px] font-medium">Community</span>
+                    {/* <span className="text-[10px] font-medium">Community</span> */}
                 </Link>
             </div>
         </div>
