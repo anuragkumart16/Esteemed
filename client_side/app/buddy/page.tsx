@@ -134,7 +134,7 @@ export default function BuddyPage() {
             </div>
 
             {/* Input Area */}
-            <div className="fixed bottom-[70px] left-0 right-0 bg-black border-t border-zinc-900 p-4">
+            <div className="fixed bottom-[7] left-0 right-0 bg-black border-t border-zinc-900 p-4">
                 <div className="max-w-md mx-auto flex gap-3 items-center">
                     <input
                         type="text"
