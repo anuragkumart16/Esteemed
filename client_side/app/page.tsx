@@ -78,7 +78,7 @@ export default function Home() {
           <p className="text-sm font-light tracking-widest uppercase mb-2 text-zinc-400">Delusion Presents</p>
           <h1 className="text-4xl font-serif font-bold mb-6">Esteemed</h1>
           <p className="text-xl text-zinc-300 max-w-xs leading-relaxed">
-            An app to help you overcome chronic masturbation.
+            An app to help you overcome chronic addictions.
           </p>
         </div>
 
