@@ -15,19 +15,7 @@ declare global {
   }
 }
 
-const DesktopWarning = () => (
-  <div className="hidden md:flex fixed inset-0 z-50 flex-col items-center justify-center bg-zinc-950 text-zinc-50 p-8 text-center">
-    <div className="absolute top-[-10%] left-[-20%] w-[140%] h-[50%] bg-zinc-100 rounded-b-[100%] z-0 opacity-5"></div>
-    <div className="z-10 flex flex-col items-center max-w-md">
-      <h1 className="text-4xl font-serif font-bold mb-6">Mobile View Only</h1>
-      <p className="text-zinc-400 text-lg leading-relaxed">
-        Esteemed is designed to be experienced on a mobile device.
-        <br /><br />
-        Please switch to mobile view or open this page on your phone to continue your journey.
-      </p>
-    </div>
-  </div>
-);
+
 
 export default function Home() {
   const [showSplash, setShowSplash] = useState(true);
@@ -36,6 +24,16 @@ export default function Home() {
 
   useEffect(() => {
     const hasOnboarded = localStorage.getItem("hasOnboarded");
+
+    // Use matchMedia for a more robust check
+    const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+
+    if (isDesktop) {
+      // On desktop, the MobileGuard component in layout will handle the warning.
+      // We prevent the splash screen from transitioning and stop redirects.
+      return;
+    }
+
     if (hasOnboarded) {
       router.replace("/landing");
       return;
@@ -64,8 +62,7 @@ export default function Home() {
   if (showSplash) {
     return (
       <>
-        <DesktopWarning />
-        <div className="md:hidden flex min-h-screen flex-col items-center justify-center bg-zinc-950 text-zinc-50 relative overflow-hidden">
+        <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-950 text-zinc-50 relative overflow-hidden">
           {/* Top Curve */}
           <div className="absolute top-[-10%] left-[-20%] w-[140%] h-[50%] bg-zinc-100 rounded-b-[100%] z-0"></div>
 
@@ -83,98 +80,96 @@ export default function Home() {
   }
 
   return (
-    <>
-      <DesktopWarning />
-      <div className="md:hidden flex min-h-screen flex-col items-center justify-between bg-zinc-950 text-zinc-50 relative overflow-hidden px-6 py-12">
-        {/* Top Curve */}
-        <div className="absolute top-[-15%] left-[-20%] w-[140%] h-[45%] bg-zinc-100 rounded-b-[100%] z-0 transition-all duration-700 ease-in-out"
-          style={{ transform: `translateY(${currentSlide * -10}%)` }}></div>
+    <div className="flex min-h-screen flex-col items-center justify-between bg-zinc-950 text-zinc-50 relative overflow-hidden px-6 py-12">
+      {/* Top Curve */}
+      <div className="absolute top-[-15%] left-[-20%] w-[140%] h-[45%] bg-zinc-100 rounded-b-[100%] z-0 transition-all duration-700 ease-in-out"
+        style={{ transform: `translateY(${currentSlide * -10}%)` }}></div>
 
-        <div className="z-10 flex-1 flex flex-col items-center justify-center text-center mt-20 w-full max-w-md relative">
+      <div className="z-10 flex-1 flex flex-col items-center justify-center text-center mt-20 w-full max-w-md relative">
 
-          {/* Slide 0: Intro */}
-          <div className={`absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500 ${currentSlide === 0 ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-            <p className="text-sm font-light tracking-widest uppercase mb-2 text-zinc-400">Delusion Presents</p>
-            <h1 className="text-4xl font-serif font-bold mb-6">Esteemed</h1>
-            <p className="text-xl text-zinc-300 max-w-xs leading-relaxed">
-              An app to help you overcome chronic addictions.
+        {/* Slide 0: Intro */}
+        <div className={`absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500 ${currentSlide === 0 ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+          <p className="text-sm font-light tracking-widest uppercase mb-2 text-zinc-400">Delusion Presents</p>
+          <h1 className="text-4xl font-serif font-bold mb-6">Esteemed</h1>
+          <p className="text-xl text-zinc-300 max-w-xs leading-relaxed">
+            An app to help you overcome chronic addictions.
+          </p>
+        </div>
+
+        {/* Slide 1: Urge Documentation */}
+        <div className={`absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500 ${currentSlide === 1 ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full scale-90 opacity-60 blur-[1px]">
+            <UrgePreview />
+          </div>
+          <div className="z-20 bg-black/60 backdrop-blur-sm p-6 rounded-3xl border border-white/10 shadow-2xl">
+            <h2 className="text-2xl font-bold mb-3">Document Urges</h2>
+            <p className="text-zinc-300">
+              Observe your patterns. Understand your triggers to conquer them.
             </p>
           </div>
-
-          {/* Slide 1: Urge Documentation */}
-          <div className={`absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500 ${currentSlide === 1 ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full scale-90 opacity-60 blur-[1px]">
-              <UrgePreview />
-            </div>
-            <div className="z-20 bg-black/60 backdrop-blur-sm p-6 rounded-3xl border border-white/10 shadow-2xl">
-              <h2 className="text-2xl font-bold mb-3">Document Urges</h2>
-              <p className="text-zinc-300">
-                Observe your patterns. Understand your triggers to conquer them.
-              </p>
-            </div>
-          </div>
-
-          {/* Slide 2: Relapse Documentation */}
-          <div className={`absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500 ${currentSlide === 2 ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full scale-90 opacity-60 blur-[1px]">
-              <RelapsePreview />
-            </div>
-            <div className="z-20 bg-black/60 backdrop-blur-sm p-6 rounded-3xl border border-white/10 shadow-2xl">
-              <h2 className="text-2xl font-bold mb-3">Rise from Ashes</h2>
-              <p className="text-zinc-300">
-                Document your give ups. Learn from every fall to build a stronger streak.
-              </p>
-            </div>
-          </div>
-
-          {/* Slide 3: Panic Button */}
-          <div className={`absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500 ${currentSlide === 3 ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full scale-90 opacity-60 blur-[1px]">
-              <PanicPreview />
-            </div>
-            <div className="z-20 bg-black/60 backdrop-blur-sm p-6 rounded-3xl border border-white/10 shadow-2xl">
-              <h2 className="text-2xl font-bold mb-3">Panic Button</h2>
-              <p className="text-zinc-300">
-                A tool to calm you down. Stop yourself from giving in when the urge hits hard.
-              </p>
-            </div>
-          </div>
-
-          {/* Slide 4: Buddy AI */}
-          <div className={`absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500 ${currentSlide === 4 ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full scale-90 opacity-60 blur-[1px]">
-              <BuddyPreview />
-            </div>
-            <div className="z-20 bg-black/60 backdrop-blur-sm p-6 rounded-3xl border border-white/10 shadow-2xl">
-              <h2 className="text-2xl font-bold mb-3">Meet Buddy AI</h2>
-              <p className="text-zinc-300">
-                Your personal chatbot to navigate urges. Talk through your feelings and stay in control.
-              </p>
-            </div>
-          </div>
-
         </div>
 
-        <div className="z-10 w-full max-w-md mb-8">
-          {/* Progress Indicators */}
-          <div className="flex justify-center gap-2 mb-6">
-            {[0, 1, 2, 3, 4].map((idx) => (
-              <div
-                key={idx}
-                className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentSlide ? 'w-8 bg-zinc-100' : 'w-2 bg-zinc-700'}`}
-              />
-            ))}
+        {/* Slide 2: Relapse Documentation */}
+        <div className={`absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500 ${currentSlide === 2 ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full scale-90 opacity-60 blur-[1px]">
+            <RelapsePreview />
           </div>
-
-          <button
-            type="button"
-            onClick={handleContinue}
-            className="w-full rounded-full bg-zinc-100 py-4 text-zinc-900 font-bold text-lg hover:bg-zinc-200 transition-colors shadow-lg shadow-white/10"
-          >
-            {currentSlide === 4 ? "Get Started" : "Continue"}
-          </button>
+          <div className="z-20 bg-black/60 backdrop-blur-sm p-6 rounded-3xl border border-white/10 shadow-2xl">
+            <h2 className="text-2xl font-bold mb-3">Rise from Ashes</h2>
+            <p className="text-zinc-300">
+              Document your give ups. Learn from every fall to build a stronger streak.
+            </p>
+          </div>
         </div>
+
+        {/* Slide 3: Panic Button */}
+        <div className={`absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500 ${currentSlide === 3 ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full scale-90 opacity-60 blur-[1px]">
+            <PanicPreview />
+          </div>
+          <div className="z-20 bg-black/60 backdrop-blur-sm p-6 rounded-3xl border border-white/10 shadow-2xl">
+            <h2 className="text-2xl font-bold mb-3">Panic Button</h2>
+            <p className="text-zinc-300">
+              A tool to calm you down. Stop yourself from giving in when the urge hits hard.
+            </p>
+          </div>
+        </div>
+
+        {/* Slide 4: Buddy AI */}
+        <div className={`absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500 ${currentSlide === 4 ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full scale-90 opacity-60 blur-[1px]">
+            <BuddyPreview />
+          </div>
+          <div className="z-20 bg-black/60 backdrop-blur-sm p-6 rounded-3xl border border-white/10 shadow-2xl">
+            <h2 className="text-2xl font-bold mb-3">Meet Buddy AI</h2>
+            <p className="text-zinc-300">
+              Your personal chatbot to navigate urges. Talk through your feelings and stay in control.
+            </p>
+          </div>
+        </div>
+
       </div>
-    </>
+
+      <div className="z-10 w-full max-w-md mb-8">
+        {/* Progress Indicators */}
+        <div className="flex justify-center gap-2 mb-6">
+          {[0, 1, 2, 3, 4].map((idx) => (
+            <div
+              key={idx}
+              className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentSlide ? 'w-8 bg-zinc-100' : 'w-2 bg-zinc-700'}`}
+            />
+          ))}
+        </div>
+
+        <button
+          type="button"
+          onClick={handleContinue}
+          className="w-full rounded-full bg-zinc-100 py-4 text-zinc-900 font-bold text-lg hover:bg-zinc-200 transition-colors shadow-lg shadow-white/10"
+        >
+          {currentSlide === 4 ? "Get Started" : "Continue"}
+        </button>
+      </div>
+    </div>
+
   );
 }

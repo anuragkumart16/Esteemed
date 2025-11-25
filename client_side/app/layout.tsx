@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
+import MobileGuard from "@/components/MobileGuard";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,8 +26,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#09090b" />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        
+
         {/* Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-2SWCWN2HQC"
@@ -40,8 +45,23 @@ export default function RootLayout({
             gtag('config', 'G-2SWCWN2HQC');
           `}
         </Script>
+        <Script id="sw-register" strategy="afterInteractive">
+          {`
+            if ('serviceWorker' in navigator) {
+              window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js').then(function(registration) {
+                  console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function(err) {
+                  console.log('ServiceWorker registration failed: ', err);
+                });
+              });
+            }
+          `}
+        </Script>
 
-        {children}
+        <MobileGuard>
+          {children}
+        </MobileGuard>
       </body>
     </html>
   );
