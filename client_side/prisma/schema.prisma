@@ -51,3 +51,13 @@ model EarlyAccess {
   email     String
   createdAt DateTime @default(now())
 }
+
+model UserVisit {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  visitorId String
+  ip        String?
+  country   String?
+  city      String?
+  userAgent String?
+  createdAt DateTime @default(now())
+}
